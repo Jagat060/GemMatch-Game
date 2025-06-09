@@ -4,7 +4,8 @@ public class Main {
         Board board = new Board(4,4);
         System.out.println(board);
         while (true) {
-           // board.handleInput();
+            board.handleInput();
+            System.out.println(board);
         }
     }
 }
