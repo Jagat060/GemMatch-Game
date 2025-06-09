@@ -5,12 +5,9 @@ public class Board {
     int width;
     int height;
     char [][] board;
-    Random random = new Random();
+    Random random;
     char [] gems = {'*','+','#'};
     Scanner scan = new Scanner(System.in);
-    int sR, sC, eR, eC;
-    char temp;
-    String direction;
 
     Board(int w, int h){
         this.width  = w;
@@ -20,6 +17,7 @@ public class Board {
         initializeBoard();
     }
 
+    //board for gems collection is initialized
     public void initializeBoard(){
         for(int i=0; i<width; i++){
             for(int j=0; j<height; j++){
@@ -28,6 +26,7 @@ public class Board {
         }
     }
 
+    // toString method overrided to print board state
     public String toString(){
         StringBuilder sb = new StringBuilder();
         for(char[] row: board){
@@ -39,42 +38,61 @@ public class Board {
         return sb.toString();
     }
 
+    // console input fron user is handled
     public void handleInput(){
         System.out.println("v for vertical, h for horizontal movement of gems.");
-        direction = scan.nextLine();
+        String direction = scan.nextLine();
         if(direction.equals("v") || direction.equals("h")){
-            prompt();
-            temp = board [sR][sC];
-            board [sR][sC] = board [eR][eC];
-            board [eR][eC] = temp;
+            prompt(direction);
+
         }
         else{
             System.out.println("not a valid direction for move, enter 'v' or 'h'");
             handleInput();
         }
-
     }
-    public void prompt(){
-        System.out.println("enter positions to swap,4 ints for grid position seperatred by commas");
-        String[] parts = scan.nextLine().split(" ");
-        sR = Integer.parseInt(parts[0]);
-        sC = Integer.parseInt(parts[1]);
-        eR = Integer.parseInt(parts[2]);
-        eC = Integer.parseInt(parts[3]);
-        validMove();
 
+    // user prompt to receive gems to switch
+    public void prompt(String D){
+        try{
+            System.out.println("enter positions to swap,4 ints for grid position seperatred by spaces");
+            String[] parts = scan.nextLine().split(" ");
+            int sR = Integer.parseInt(parts[0]);
+            int sC = Integer.parseInt(parts[1]);
+            int eR = Integer.parseInt(parts[2]);
+            int eC = Integer.parseInt(parts[3]);
+            if(validMove(sR, sC, eR, eC, D)){
+                char temp = board [sR][sC];
+                board [sR][sC] = board [eR][eC];
+                board [eR][eC] = temp;
+            }
+            else{
+                System.out.println("Not a valid move, please try again.");
+                prompt(D);
+            }
+        } catch (Exception e) {
+            System.out.println("Not a valid Input");
+            prompt(D);
+        }
     }
-    public boolean validMove(){
+
+    //checking if the attempted move is valid for the selected direction
+    public boolean validMove(int sR, int sC, int eR, int eC, String direction){
+        if (sR < 0 || sR >= height || sC < 0 || sC >= width ||
+                eR < 0 || eR >= height || eC < 0 || eC >= width) {
+            System.out.println("Coordinates out of bounds.");
+            return false; //to avoid out of bounds.
+        }
         if (direction.equals("v") && Math.abs(sR-eR) ==1 && (sC-eC) == 0){
             return true;
         }
         else if (direction.equals("h") && Math.abs(sC-eC) ==1 && (sR-eR) == 0){
             return true;
         }
-        else{
-            System.out.println("Not a valid move");
-            prompt();
-            return false;
-        }
+        System.out.println("Not a valid move");
+        return false;
     }
+
+
+
 }
