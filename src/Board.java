@@ -1,12 +1,12 @@
-import java.util.Random;
-import java.util.Scanner;
+import javax.swing.text.Position;
+import java.util.*;
 
 public class Board {
     int width;
     int height;
     char[][] board;
     Random random;
-    char[] gems = {'*', '+', '#'};
+    char[] gems = {'*', '+', '#', '%'};
     Scanner scan = new Scanner(System.in);
 
     Board(int w, int h) {
@@ -91,26 +91,86 @@ public class Board {
     }
 
     public void checkMatch() {
-        for (int i = 0; i < width; i++) {
-            for (int j = 0; j < height; j++) {
-                checkHorizontalMatch(i,j);
-                checkVerticalMatch(i,j);
+        for (int i = 0; i < height; i++) {
+            for (int j = 0; j < width; j++) {
+                checkHorizontalMatch(i, j);
+                checkVerticalMatch(i, j);
             }
         }
     }
 
-    public void checkHorizontalMatch(int i, int j){
-        if (j + 2 < height && board[i][j] == board[i][j + 1] && board[i][j] == board[i][j + 2]) {
-            System.out.println("Horizontal match found at: (" + i + "," + j + ")");
+    public void checkHorizontalMatch(int i, int j) {
+        Set<String> positions = new HashSet<>();
+        int count = 1;
+        int maxCount = 1;
+//        if (j + 2 < height && board[i][j] == board[i][j + 1] && board[i][j] == board[i][j + 2]) {
+//            System.out.println("Horizontal match found at: (" + i + "," + j + ")");
+//        }
+        for (int col = j+1; col < width; col++) {
+            if (board[i][col] == board[i][col-1]) {
+                positions.add(i+","+(col-1));
+                positions.add(i+","+(col));
+                count++;
+                maxCount = Math.max(maxCount, count);
+//                for(String position: positions){
+//                    System.out.println(position+"      debug");
+//                }
+            } else {
+                if(maxCount>=3){
+                    int startCol = col - maxCount;
+                    System.out.println(maxCount + " Horizontal match found at: (" + i + "," + startCol + ")"+ board[i][startCol]);
+                    for(String position: positions){
+                        System.out.println(position);
+                    }
+                    remove(positions);
+                }
+                count = 1;
+                maxCount = 1;
+                positions.clear();
+            }
         }
-    }
-    public void checkVerticalMatch(int i, int j){
-        if (i + 2 < width && board[i][j] == board[i + 1][j] && board[i][j] == board[i + 2][j]) {
-            System.out.println("Vertical match found at: (" + i + "," + j + ")");
-        }
-    }
-    public void replace(){
 
+    }
+
+    public void checkVerticalMatch(int i, int j) {
+        Set<String> positions = new HashSet<>();
+        int count = 1;
+        int maxCount = 1;
+//        if (i + 2 < width && board[i][j] == board[i + 1][j] && board[i][j] == board[i + 2][j]) {
+//            System.out.println("Vertical match found at: (" + i + "," + j + ")");
+//        }
+        for (int row = i+1; row < width; row++) {
+            if (board[row][j] == board[row-1][j]) {
+                positions.add((row-1)+","+(j));
+                positions.add((row)+","+(j));
+                count++;
+                maxCount = Math.max(maxCount, count);
+            } else {
+                if(maxCount>=3){
+                    int startRow = row-maxCount;
+                    System.out.println(maxCount + " Vertical match found at: (" + startRow + "," + j + ")"+ + board[startRow][j]);
+                    for(String position: positions){
+                        System.out.println(position);
+                    }
+                    remove(positions);
+                }
+                count = 1;
+                maxCount = 1;
+            }
+        }
+    }
+
+
+
+    public void remove(Set<String> position) {
+        int row;
+        int col;
+        for(String location: position){
+            String[] parts = location.split(",");
+            row = Integer.parseInt(parts[0]);
+            col = Integer.parseInt(parts[1]);
+            board[row][col] = ' ';
+        }
     }
 
 }
