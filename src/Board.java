@@ -8,6 +8,7 @@ public class Board {
     Random random;
     char[] gems = {'*', '+', '#', '%'};
     Scanner scan = new Scanner(System.in);
+    boolean flag = false;
 
     Board(int w, int h) {
         this.width = w;
@@ -104,7 +105,7 @@ public class Board {
     public void checkHorizontalMatch(int i, int j, Set<String> positions) {
         int count = 1;
         int maxCount = 1;
-        for (int col = j+1; col < width; col++) {
+        for (int col = j + 1; col < width; col++) {
             if (board[i][col] == board[i][col - 1]) {
                 count++;
                 maxCount = Math.max(maxCount, count);
@@ -130,15 +131,15 @@ public class Board {
     public void checkVerticalMatch(int i, int j, Set<String> positions) {
         int count = 1;
         int maxCount = 1;
-        for (int row = i+1; row < width; row++) {
-            if (board[row][j] == board[row-1][j]) {
+        for (int row = i + 1; row < height; row++) {
+            if (board[row][j] == board[row - 1][j]) {
                 count++;
                 maxCount = Math.max(maxCount, count);
             } else {
-                if(maxCount>=3){
-                    int startRow = row-maxCount;
-                    for(int start = startRow; start<row; start++){
-                        positions.add(start+","+ j);
+                if (maxCount >= 3) {
+                    int startRow = row - maxCount;
+                    for (int start = startRow; start < row; start++) {
+                        positions.add(start + "," + j);
                     }
                 }
                 count = 1;
@@ -156,11 +157,31 @@ public class Board {
     public void remove(Set<String> position) {
         int row;
         int col;
-        for(String location: position){
+        for (String location : position) {
             String[] parts = location.split(",");
             row = Integer.parseInt(parts[0]);
             col = Integer.parseInt(parts[1]);
             board[row][col] = '-';
+        }
+    }
+
+    public void replace() {
+        for (int i = 0; i < height; i++) {
+            for (int j = 0; j <width; j++) {
+                if (board[i][j] == '-') {
+                    recurse(i, j);
+                }
+            }
+        }
+    }
+
+    public void recurse(int row, int col) {
+        if (row == 0 && board[row][col] == '-') {
+            board[row][col] = gems[random.nextInt(gems.length)];
+        } else {
+            board[row][col] = board[row - 1][col];
+            board[row - 1][col] = '-';
+            recurse(row - 1, col);
         }
     }
 
