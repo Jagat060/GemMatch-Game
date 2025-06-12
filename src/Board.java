@@ -41,6 +41,7 @@ public class Board {
 
     // console input fron user is handled
     public void handleInput() {
+        flag = true;
         System.out.println("v for vertical, h for horizontal movement of gems.");
         String direction = scan.nextLine();
         if (direction.equals("v") || direction.equals("h")) {
@@ -92,14 +93,22 @@ public class Board {
     }
 
     public void checkMatch() {
-        Set<String> positions = new HashSet<>();
-        for (int i = 0; i < height; i++) {
-            for (int j = 0; j < width; j++) {
-                checkHorizontalMatch(i, j, positions);
-                checkVerticalMatch(i, j, positions);
+        boolean foundMatch;
+        do {
+            Set<String> positions = new HashSet<>();
+            foundMatch = false;
+            for (int i = 0; i < height; i++) {
+                for (int j = 0; j < width; j++) {
+                    checkHorizontalMatch(i, j, positions);
+                    checkVerticalMatch(i, j, positions);
+                }
             }
-        }
-        remove(positions);
+            if (!positions.isEmpty()) {
+                foundMatch = true;
+                remove(positions);
+                replace();
+            }
+        } while (foundMatch);
     }
 
     public void checkHorizontalMatch(int i, int j, Set<String> positions) {
@@ -167,9 +176,10 @@ public class Board {
 
     public void replace() {
         for (int i = 0; i < height; i++) {
-            for (int j = 0; j <width; j++) {
+            for (int j = 0; j < width; j++) {
                 if (board[i][j] == '-') {
                     recurse(i, j);
+                    flag = true;
                 }
             }
         }

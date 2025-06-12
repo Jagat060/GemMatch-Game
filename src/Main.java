@@ -6,11 +6,6 @@ public class Main {
         while (true) {
             board.checkMatch();
             System.out.println(board);
-            board.replace();
-            board.checkMatch();
-            board.replace();
-
-            System.out.println(board);
             board.handleInput();
             System.out.println(board);
             board.checkMatch();
