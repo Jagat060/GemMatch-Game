@@ -27,7 +27,7 @@ public class Board {
         }
     }
 
-    // toString method overrided to print board state
+    // toString method override to print board state
     public String toString() {
         StringBuilder sb = new StringBuilder();
         for (char[] row : board) {
@@ -194,5 +194,4 @@ public class Board {
             recurse(row - 1, col);
         }
     }
-
 }
