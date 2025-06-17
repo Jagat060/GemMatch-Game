@@ -4,14 +4,16 @@ public class Main {
         int row = 7;
         int col = row;
 
-        Board board = new Board(row, col);
-        GemManagerGUI gui = new GemManagerGUI(row,col);
-        System.out.println(board);
+        Board boardLayout = new Board(row, col);
+        //board.initializeBoard();
+        //GemManagerGUI gui = new GemManagerGUI(row,col);
+        //gui.makeFrame();
+        System.out.println(boardLayout);
         while (true) {
-            board.checkMatch();
-            System.out.println(board);
-            board.handleInput();
-            System.out.println(board);
+            boardLayout.checkMatch();
+            System.out.println(boardLayout);
+            boardLayout.handleInput();
+            System.out.println(boardLayout);
         }
     }
 }
