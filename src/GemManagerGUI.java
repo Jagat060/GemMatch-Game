@@ -90,19 +90,19 @@ public class GemManagerGUI extends Board {
     }
 
     public void buttonDesign(int row, int col, JButton button) {
-        int w = 80;
+        int w = 70;
         int h = 80;
-        ImageIcon Icon1 = new ImageIcon("gemstone_6057422.png");
-        ImageIcon Icon2 = new ImageIcon("3132163.png");
-        ImageIcon Icon3 = new ImageIcon("diamond_4743152.png");
-        ImageIcon Icon4 = new ImageIcon("emerald_2504321.png");
+        ImageIcon Icon1 = new ImageIcon("janak1.jpeg");
+        ImageIcon Icon2 = new ImageIcon("janak2.jpeg");
+        ImageIcon Icon3 = new ImageIcon("janak3.jpeg");
+        ImageIcon Icon4 = new ImageIcon("janak4.jpeg");
         ImageIcon Icon5 = new ImageIcon("tick.jpeg");
 
         Image ICon1 = Icon1.getImage().getScaledInstance(w, h, Image.SCALE_SMOOTH);
         Image ICon2 = Icon2.getImage().getScaledInstance(w, h, Image.SCALE_SMOOTH);
         Image ICon3 = Icon3.getImage().getScaledInstance(w, h, Image.SCALE_SMOOTH);
         Image ICon4 = Icon4.getImage().getScaledInstance(w, h, Image.SCALE_SMOOTH);
-        Image ICon5 = Icon5.getImage().getScaledInstance(w, h, Image.SCALE_SMOOTH);
+        Image ICon5 = Icon5.getImage().getScaledInstance(w, 90, Image.SCALE_SMOOTH);
 
         ImageIcon icon1 = new ImageIcon(ICon1);
         ImageIcon icon2 = new ImageIcon(ICon2);
@@ -157,13 +157,13 @@ public class GemManagerGUI extends Board {
             updateGUI();  // Show removed matches as tick icons
 
             // Delay falling animation and continue matching after 1 second
-            Timer timer = new Timer(3000, new ActionListener() {
+            Timer timer = new Timer(2000, new ActionListener() {
                 public void actionPerformed(ActionEvent evt) {
                     replace();
                     updateGUI();
 
                     // Recursively check for new matches after replacement
-                    checkMatch();  // Safe now because it’s in callback
+                    checkMatch();
                 }
             });
             timer.setRepeats(false);
